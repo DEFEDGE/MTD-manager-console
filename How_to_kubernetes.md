@@ -137,7 +137,7 @@ To be installed on one or more worker. From now on, every installation process m
 	- No articular storage settings
 	- Advanced settings:
 		- select node on which the pod will be installed (`worker`)
-2. Click on the pod, go to `edit yaml` and add in `spec.container` (same indent of ports on row 29)
+2. In the workloads section, click on the pod, go to `edit yaml` and add in `spec.container` (same indent of ports on row 29)
 	```sh
         envFrom:
           - configMapRef:
