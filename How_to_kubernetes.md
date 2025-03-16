@@ -65,9 +65,10 @@ kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l 'app
 4. In Custom Resources, click on the right of `ks-installer` and select `Edit YAML`.
 5. In this YAML file, navigate to `edgeruntime` (around row 71).
 6. Change the value of `enabled` from `false` to `true`.
-7. Change the `advertiseAddress` to the IP of the master node to enable all KubeEdge components.
-8. Click `OK`.
-9. Run the following command to verify the installation:
+7. Change the value of `enabled` of `edgeruntime.kubeedge` from `false` to `true`.
+8. Change the `advertiseAddress` to the IP of the master node to enable all KubeEdge components.
+9. Click `OK`.
+10. Run the following command to verify the installation:
     ```sh
     kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l 'app in (ks-install, ks-installer)' -o jsonpath='{.items[0].metadata.name}') -f
     ```
