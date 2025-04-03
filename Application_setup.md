@@ -2,6 +2,7 @@
 N.B. You need to install the cluster first (follow the "[How to Kubernetes](How_to_kubernetes.md)" file).
 
 PGAdmin database setup
+
 Use PostgreSQL db with PGAdmin interface to manage the information about the cluster.
 1. Install postgreSQL
 	```sh	
