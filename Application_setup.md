@@ -75,12 +75,26 @@ In `ClusrterController` (src/main/java/mtd/manager/controller/ClusterController.
 
 N.B. If you are using the server configuration, you need to connect to http://<MASTER_NODE_IP>:8080
 
-Once everything is set, execute the following command in the main folder:
+Once everything is set, execute the following commands to use java 17 version:
+```sh
+sudo apt install openjdk-17-jdk
+```
+to install and 
+```sh
+sudo update-alternatives --config java
+```
+to select the java 17 version
+
+Aftertwards, execute the following commands in the main folder:
 ```sh
 sudo chmod +x build-and-run.sh
 ```
-and then run `./build-and-run.sh` to perform:
+and then run
+```sh
+./build-and-run.sh
+```
+to perform:
   - building: mvn clean install
   - execution: java -jar ./target/mtd-manager.jar  
 
-Now you can connect to http://localhost:8080 to access the MTD console.
+Now you can connect to http://localhost:8080 (or http://<MASTER_NODE_IP>:8080) to access the MTD console.
