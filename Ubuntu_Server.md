@@ -10,11 +10,11 @@ The hardware requirements are the same as reported in [How to Kubernetes](How_to
     sudo apt update
     sudo apt upgrade
     ```
-5. If you did not use the gui for the installation, you need to perform
+5. If you did not use the gui for the installation, you need to run
    ```sh
     sudo apt install openssh-server
     ```
-   and then restart the system.
+   to install the ssh and then restart the system.
 
 ## 2. Static IP setup
 To avoid the changing of the IP of the VMs, you can set a static IP as follows:
