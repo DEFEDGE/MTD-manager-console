@@ -111,7 +111,7 @@ Depending on the names of your workers and how you connect to the cluster (via t
    ```
 
 2. Use of the `VM BROWSER` and nodes are named differently than `master`, `worker1` and `worker2`: 
-   enter the `/etc/hosts` file and add the machine name on the same row where kubekey hosts are specified
+   enter the `/etc/hosts` file of your master machine and add the machine name on the same row where kubekey hosts are specified
    changing from this
    ```yaml
    # kubekey hosts BEGIN
@@ -124,13 +124,13 @@ Depending on the names of your workers and how you connect to the cluster (via t
         <IP_WORKER>  worker1.cluster.local worker01 worker1
         <IP_WORKER2>  worker2.cluster.local worker02 worker2
    ```
-   i.e., add a space after your machine (worker01, and worker02) name and then the correct name (worker1, and worker2). Change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, run:
+   i.e., add a space after your machine name (worker01, and worker02) and then the correct name (worker1, and worker2). Change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, on the master run:
    ```sh
    kubectl apply -f backend_deployment.yaml
    kubectl apply -f frontend_deployment.yaml
    ```
    
-3. Use of the `HOST BROWSER` and nodes are named `master`, `worker1` and `worker2`:
+3. Use of the `HOST BROWSER` and nodes are named `master`, `worker1` and `worker2`: 
    go to `C:\Windows\System32\drivers\etc\hosts` and add the IP and the names master, worker1, worker2:
    ```yaml
    	------
@@ -151,7 +151,7 @@ Depending on the names of your workers and how you connect to the cluster (via t
    kubectl apply -f frontend_deployment.yaml
    ```
 
-4. Use of the `HOST BROWSER` and nodes are named differently than `master`, `worker1` and `worker2`:
+4. Use of the `HOST BROWSER` and nodes are named differently than `master`, `worker1` and `worker2`: 
    go to `C:\Windows\System32\drivers\etc\hosts` and add the IP and the names master, worker1, worker2:
    ```yaml
    	------
@@ -166,7 +166,7 @@ Depending on the names of your workers and how you connect to the cluster (via t
 	<IP_WORKER2>	worker2 
 	------
    ```
-   enter the `/etc/hosts` file and add the machine name on the same row where kybekey hosts are specified
+   then enter the `/etc/hosts` file on your master machine and add the machine name on the same row where kybekey hosts are specified
    changing from this
    ```yaml
    # kubekey hosts BEGIN
@@ -179,11 +179,12 @@ Depending on the names of your workers and how you connect to the cluster (via t
         <IP_WORKER>  worker1.cluster.local worker01 worker1
         <IP_WORKER2>  worker2.cluster.local worker02 worker2
    ```
-   i.e., add a space after your machine name (worker01, and worker02) and then the correct name (worker1, and worker2), and then change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, run:
+   i.e., add a space after your machine name (worker01, and worker02) and then the correct name (worker1, and worker2). Change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, on the master run:
    ```sh
    kubectl apply -f backend_deployment.yaml
    kubectl apply -f frontend_deployment.yaml
    ```
-It is important that you use `master`, `worker1` and `worker2` as machine names in the DNS files to keep consistency between front and back end callbacks.
 
-After checking that every service is installed and running using kubesphere console, you can connect to http://worker1:31566/ to access the main login page of the application.
+It is important that you use `master`, `worker1` and `worker2` as machine names in the DNS files to keep consistency between frontend and backend callbacks.
+
+After checking that every service is installed and running using the kubesphere console, you can connect to http://worker1:31566/ to access the main login page of the application.
