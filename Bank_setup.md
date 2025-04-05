@@ -12,21 +12,25 @@ The following image describes how the application is intended to be deployed usi
   kubectl create secret generic backend-secrets --from-literal=db_password='rootpassword' --from-literal=secret_key='rootpassword'
   ```
   to create the secrets i.e., the database access credentials.
+  
 4. run
   ```sh
   kubectl apply -f mysql-deployment.yaml
   ```
-  to apply the deployment on the cluster 
+  to apply the deployment on the cluster.
+  
 5. run
   ```sh
   kubectl get pods
   ```
-  to confirm that the pod is up and running (you can even use the kubesphere console)
+  to confirm that the pod is up and running (you can even use the kubesphere console).
+  
 6. run
   ```sh
   kubectl exec -it <POD_NAME> -- mysql -u root -p
   ```
-  to access the pod and, when required, insert `rootpassword` as access password. 
+  to access the pod and, when required, insert `rootpassword` as access password.
+  
 7. run
   ```sh
   show databases;
@@ -40,6 +44,7 @@ The following image describes how the application is intended to be deployed usi
   use bankdb;
   ```
   to enter the database
+  
 9. build `users` and `transactions` tables with the following commands:
   ```sql
   CREATE TABLE users ( 
