@@ -65,7 +65,7 @@ The following image describes how the application is intended to be deployed usi
   	    amount DECIMAL(10,2) NOT NULL,
   	    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   	    description TEXT NULL
-   	    );
+ 	);
  	```
 10. populate the tables with example values
 	```sql
@@ -97,34 +97,34 @@ The following image describes how the application is intended to be deployed usi
   	    'rimborso vacanza'
  	);
   	```
- 	to grant password security, in the database are stored hashed password values. The password itself is the name of the user with the capital letter.
+ 	To grant password security, in the database are stored hashed password values. The password itself is the name of the user with the capital letter.
 
 ## 2. Front & back end deployment
 
-Depending on the names of your workers and how you connect to the cluster (via the VM browser if you used the linux lite configuration or via the host browser if you are using the server configuration with windows host) you need to perform some of the following action.
+Depending on the names of your workers and how you connect to the cluster (via the VM browser if you used the linux lite configuration or via the host browser if you are using the server configuration with windows host), you need to perform some of the following action.
 
-1. Use of the `VM BROWSER` and nodes are named `master`, `worker1` and `worker2`:
+1. Use of the `VM BROWSER` and nodes are named `master`, `worker1` and `worker2`: 
    on the master run
    ```sh
    kubectl apply -f backend_deployment.yaml
    kubectl apply -f frontend_deployment.yaml
    ```
 
-2. Use of the `VM BROWSER` and nodes are named differently than `master`, `worker1` and `worker2`:
-   enter the `/etc/hosts` file and add the machine name on the same row where kybekey hosts are specified
+2. Use of the `VM BROWSER` and nodes are named differently than `master`, `worker1` and `worker2`: 
+   enter the `/etc/hosts` file and add the machine name on the same row where kubekey hosts are specified
    changing from this
    ```yaml
    # kubekey hosts BEGIN
-        <IP_WORKER>  worker1.cluster.local worker
+        <IP_WORKER>  worker1.cluster.local worker01
         <IP_WORKER2>  worker2.cluster.local worker02
    ```
    to this
    ```yaml
    # kubekey hosts BEGIN
-        <IP_WORKER>  worker1.cluster.local worker worker1
+        <IP_WORKER>  worker1.cluster.local worker01 worker1
         <IP_WORKER2>  worker2.cluster.local worker02 worker2
    ```
-   i.e., add a space after your machine name and then the correct name, and then change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, run:
+   i.e., add a space after your machine (worker01, and worker02) name and then the correct name (worker1, and worker2). Change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, run:
    ```sh
    kubectl apply -f backend_deployment.yaml
    kubectl apply -f frontend_deployment.yaml
@@ -170,16 +170,16 @@ Depending on the names of your workers and how you connect to the cluster (via t
    changing from this
    ```yaml
    # kubekey hosts BEGIN
-        <IP_WORKER>  worker1.cluster.local worker
+        <IP_WORKER>  worker1.cluster.local worker01
         <IP_WORKER2>  worker2.cluster.local worker02
    ```
    to this
    ```yaml
    # kubekey hosts BEGIN
-        <IP_WORKER>  worker1.cluster.local worker worker1
+        <IP_WORKER>  worker1.cluster.local worker01 worker1
         <IP_WORKER2>  worker2.cluster.local worker02 worker2
    ```
-   i.e., add a space after your machine name and then the correct name, and then change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, run:
+   i.e., add a space after your machine name (worker01, and worker02) and then the correct name (worker1, and worker2), and then change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, run:
    ```sh
    kubectl apply -f backend_deployment.yaml
    kubectl apply -f frontend_deployment.yaml
