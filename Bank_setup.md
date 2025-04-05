@@ -101,36 +101,89 @@ The following image describes how the application is intended to be deployed usi
 
 ## 2. Front & back end deployment
 
-Depending on the names of your workers and how you connect to the cluster (via the VM browser if you used the the linux lite configuration or via the host browser if you used the server configuration) you need to perform some of the following action.
+Depending on the names of your workers and how you connect to the cluster (via the VM browser if you used the linux lite configuration or via the host browser if you are using the server configuration with windows host) you need to perform some of the following action.
 
-1. Use of the `VM BROWSER` and nodes are named `worker1` and `worker2`:
-   run
+1. Use of the `VM BROWSER` and nodes are named `master`, `worker1` and `worker2`:
+   on the master run
    ```sh
    kubectl apply -f backend_deployment.yaml
    kubectl apply -f frontend_deployment.yaml
    ```
 
-2. Use of the `VM BROWSER` and nodes are named differently than `worker1` and `worker2`:
+2. Use of the `VM BROWSER` and nodes are named differently than `master`, `worker1` and `worker2`:
    enter the `/etc/hosts` file and add the machine name on the same row where kybekey hosts are specified
    changing from this
    ```yaml
    # kubekey hosts BEGIN
         <IP_WORKER>  worker1.cluster.local worker
-        <IP_WORKER2>  worker2.cluster.local worker2
+        <IP_WORKER2>  worker2.cluster.local worker02
    ```
    to this
    ```yaml
    # kubekey hosts BEGIN
         <IP_WORKER>  worker1.cluster.local worker worker1
-        <IP_WORKER2>  worker2.cluster.local worker2
+        <IP_WORKER2>  worker2.cluster.local worker02 worker2
    ```
-   i.e., add a space and then the name.
+   i.e., add a space after your machine name and then the correct name, and then change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, run:
+   ```sh
+   kubectl apply -f backend_deployment.yaml
+   kubectl apply -f frontend_deployment.yaml
+   ```
    
-4. change row 16 of `backend_deployment.yaml` naming
-	change row 23 of `frontend_deployment.yaml` naming
+3. Use of the `HOST BROWSER` and nodes are named `master`, `worker1` and `worker2`:
+   go to `C:\Windows\System32\drivers\etc\hosts` and add the IP and the names master, worker1, worker2:
+   ```yaml
+   	------
+	# Copyright (c) 1993-2009 Microsoft Corp.
+	…
+	# localhost name resolution is handled within DNS itself.
+	# 127.0.0.1       localhost
+	# ::1             localhost
 
-backend_deployment.yaml
-frontend_deployment.yaml
+	<IP_MASTER>	master
+	<IP_WORKER1>	worker1
+	<IP_WORKER2>	worker2 
+	------
+   ```
+   and then on the master run
+   ```sh
+   kubectl apply -f backend_deployment.yaml
+   kubectl apply -f frontend_deployment.yaml
+   ```
 
+4. Use of the `HOST BROWSER` and nodes are named differently than `master`, `worker1` and `worker2`:
+   go to `C:\Windows\System32\drivers\etc\hosts` and add the IP and the names master, worker1, worker2:
+   ```yaml
+   	------
+	# Copyright (c) 1993-2009 Microsoft Corp.
+	…
+	# localhost name resolution is handled within DNS itself.
+	# 127.0.0.1       localhost
+	# ::1             localhost
 
+	<IP_MASTER>	master
+	<IP_WORKER1>	worker1
+	<IP_WORKER2>	worker2 
+	------
+   ```
+   enter the `/etc/hosts` file and add the machine name on the same row where kybekey hosts are specified
+   changing from this
+   ```yaml
+   # kubekey hosts BEGIN
+        <IP_WORKER>  worker1.cluster.local worker
+        <IP_WORKER2>  worker2.cluster.local worker02
+   ```
+   to this
+   ```yaml
+   # kubekey hosts BEGIN
+        <IP_WORKER>  worker1.cluster.local worker worker1
+        <IP_WORKER2>  worker2.cluster.local worker02 worker2
+   ```
+   i.e., add a space after your machine name and then the correct name, and then change row 16 of `backend_deployment.yaml` and row 23 of `frontend_deployment.yaml` using your machine name. Afterward, run:
+   ```sh
+   kubectl apply -f backend_deployment.yaml
+   kubectl apply -f frontend_deployment.yaml
+   ```
+It is important that you use `master`, `worker1` and `worker2` as machine names in the DNS files to keep consistency between front and back end callbacks.
 
+After checking that every service is installed and running using kubesphere console, you can connect to http://worker1:31566/ to access the main login page of the application.
