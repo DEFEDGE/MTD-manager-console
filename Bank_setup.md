@@ -103,9 +103,31 @@ The following image describes how the application is intended to be deployed usi
 
 Depending on the names of your workers and how you connect to the cluster (via the VM browser if you used the the linux lite configuration or via the host browser if you used the server configuration) you need to perform some of the following action.
 
-1. Use of the `VM BROWSER` and nodes are named `worker1` and `worker2`
-	-
-2. 
+1. Use of the `VM BROWSER` and nodes are named `worker1` and `worker2`:
+   run
+   ```sh
+   kubectl apply -f backend_deployment.yaml
+   kubectl apply -f frontend_deployment.yaml
+   ```
+
+2. Use of the `VM BROWSER` and nodes are named differently than `worker1` and `worker2`:
+   enter the `/etc/hosts` file and add the machine name on the same row where kybekey hosts are specified
+   changing from this
+   ```yaml
+   # kubekey hosts BEGIN
+        <IP_WORKER>  worker1.cluster.local worker
+        <IP_WORKER2>  worker2.cluster.local worker2
+   ```
+   to this
+   ```yaml
+   # kubekey hosts BEGIN
+        <IP_WORKER>  worker1.cluster.local worker worker1
+        <IP_WORKER2>  worker2.cluster.local worker2
+   ```
+   i.e., add a space and then the name.
+   
+4. change row 16 of `backend_deployment.yaml` naming
+	change row 23 of `frontend_deployment.yaml` naming
 
 backend_deployment.yaml
 frontend_deployment.yaml
