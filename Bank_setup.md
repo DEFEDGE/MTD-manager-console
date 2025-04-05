@@ -44,7 +44,7 @@ The following image describes how the application is intended to be deployed usi
   use bankdb;
   ```
   to enter the database
-  
+
 9. build `users` and `transactions` tables with the following commands:
   ```sql
   CREATE TABLE users ( 
@@ -67,7 +67,7 @@ The following image describes how the application is intended to be deployed usi
       description TEXT NULL
   );
   ```
-
+10. 
 
 
 backend_deployment.yaml
