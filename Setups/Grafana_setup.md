@@ -4,8 +4,11 @@ The following actions must be performed on the master node.
 
 ## 1. Grafana setup
   1. execute:
-   ```sh
+   ```bash
       helm repo add grafana https://grafana.github.io/helm-charts
+
+      helm repo update
+
       helm install grafana grafana/grafana \
         --namespace monitoring --create-namespace \
         --set adminPassword='admin' \
