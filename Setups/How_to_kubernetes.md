@@ -16,6 +16,8 @@
 - For each VM, set a bridged network card.
 - Only if needed, set the IP of each VM as static.
 
+If you want better performance, you can use virtual machines with Ubuntu server installed following [Ubuntu server guide](Ubuntu_Server.md).
+
 On each VM install
 - Docker [official guide](https://docs.docker.com/engine/install/ubuntu/).
 - `conntrack` and `socat` dependencies
@@ -37,9 +39,7 @@ On each VM install
     sudo apt install conntrak
     sudo apt install socat
     ```
-
-If you want better performance, you can use virtual machines with Ubuntu server installed following [Ubuntu server guide](Ubuntu_Server.md).
-
+    
 ## 2. Cluster Installation
 - Follow the guide: [KubeSphere Multi-node Installation](https://kubesphere.io/docs/v3.4/installing-on-linux/introduction/multioverview/)
 - Video guide: [YouTube Video Guide](https://www.youtube.com/watch?v=nYOYk3VTSgo)
