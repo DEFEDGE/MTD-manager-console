@@ -18,7 +18,7 @@ If you installed [Grafana](Grafana_setup.md) it is now possible to manage and vi
    where <FILE_PATH> is the path to the MySQL metrics exporter yaml file (`miscConfig/bank/metrics/metricsExporter-mysql.yaml`)
    
    3. now you can import the dashboard from `miscConfig/bank/metrics/grafanaDashboard-MySQL-metrics.json`
-
+---
 ### 2. Frontend metrics
    1. to setup the exporter, run:
    ```sh
@@ -27,6 +27,6 @@ If you installed [Grafana](Grafana_setup.md) it is now possible to manage and vi
    where metricsExporter-frontend.yaml is in the miscConfig directory (`miscConfig/bank/metrics/metricsExporter-frontend.yaml`).
    
    2. now you can import the dashboard from `miscConfig/bank/metrics/grafanaDashboard-frontend-metrics.json`
-
+---
 ### 3. Backend metrics
    In this case, no exporters are needed, since they are included in the deployment file. You can import the dashboard from `miscConfig/bank/metrics/grafanaDashboard-backend-metrics.json`
