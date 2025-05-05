@@ -23,7 +23,7 @@ If you installed [Grafana](Grafana_setup.md) it is now possible to manage and vi
 ### 2. Frontend metrics
    1. to setup the exporter, run:
    ```sh
-   kubectl apply -f metricsExporter-frontend.yaml.yaml -n bank-project
+   kubectl apply -f metricsExporter-frontend.yaml -n bank-project
    ```
    where metricsExporter-frontend.yaml is in the miscConfig directory (`miscConfig/bank/metrics/metricsExporter-frontend.yaml`).
    
