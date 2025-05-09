@@ -65,6 +65,6 @@ Whenever a new strategy is created, the following steps are needed:
 
 - In the `Parameter` page
 
-![Alt text](miscConfig/Param.png "Parameter")
+![Alt text](img/Param.png "Parameter")
 
 the user can set the preferred execution window.
