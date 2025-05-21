@@ -45,7 +45,7 @@ This component consumes event flows and evaluates security rules to detect anoma
    kubectl -n falco get svc
    ```
    
-   3. run the following command and change the spec.type from ClusterIP to NodePort.
+   3. run the following command and change the `spec.type` from `ClusterIP` to `NodePort`.
    ```sh
    kubectl edit svc <SERVICE_NAME> -n falco
    ```
