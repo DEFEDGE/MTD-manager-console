@@ -43,6 +43,7 @@ To avoid the changing of the IP of the VMs, you can set a static IP as follows:
     sudo netplan apply
     ```
 4. Now your machine configuration is complete.
+
 N.B. If you're using the NAT+HOST ONLY configuration, check the gateway IP of the ethernet adapter (192.168.56.x) to set the static IP.
 
 ## 3. Advanced management
