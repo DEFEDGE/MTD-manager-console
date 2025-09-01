@@ -48,14 +48,14 @@ To avoid the changing of the IP of the VMs, you can set a static IP as follows:
 If you are using a Windows machine as host and want to ease the VMs management, you can install a tool such as [MobaXTerm](https://mobaxterm.mobatek.net/). 
 On each VM check if the ssh server is running:
 ```sh
-    systemctl status ssh
+systemctl status ssh
 ```
 
 If it is not running, execute the following commands:
 
 ```sh
-    sudo systemctl start ssh
-    sudo systemctl enable ssh
+sudo systemctl start ssh
+sudo systemctl enable ssh
 ```
 
 Once everything is setup, you can create a MobaxTerm session for each VM using the selected static IP and use the VM credentials to access it. Furthermore, you can access all the dashboards from the browser of the host machine.
