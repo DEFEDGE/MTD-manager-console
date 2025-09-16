@@ -41,23 +41,25 @@ On each VM install
     ```
 ---    
 ## 2. Cluster Installation
+### N.B. The following guide relies on the use of Kubesphere, which is not open source anymore. Updates will follow.
 - Follow the guide: [KubeSphere Multi-node Installation](https://kubesphere.io/docs/v3.4/installing-on-linux/introduction/multioverview/)
 - Video guide: [YouTube Video Guide](https://www.youtube.com/watch?v=nYOYk3VTSgo)
 
 ### Steps:
 1. Pay attention to node requirements (mainly on SSH connection).
-2. Install KubeKey:
+2. Download KubeKey and make it executable:
 
     ```sh
-    curl -sfL https://get-kk.kubesphere.io | VERSION=v3.0.13 sh -
+    curl -sfL https://get-kk.kubesphere.io | sh -
     chmod +x kk
     ```
 
 3. Create cluster config:
 
     ```sh
-    ./kk create config --with-kubernetes v1.23.10 --with-kubesphere v3.4.1
+    ./kk create config --with-kubernetes v1.33.4
     ```
+The command using Kubesphere `./kk create config --with-kubernetes v1.23.10 --with-kubesphere v3.4.1` is not available anymore.
 
 4. Edit configuration properly by setting `specs.hosts` with the name and the IPs, user, and password of the machine you set `specs.roleGroups` accordingly (etcd and control-plane must be set to the master node).
     ```yaml
@@ -76,13 +78,12 @@ On each VM install
         # Add more worker names as needed
     # ... rest of the file
     ```
-
 5. Create cluster:
 
     ```sh
     ./kk create cluster -f <config-name>.yaml
     ```
-At the end something like this will be shown:
+If you used Kubesphere, at the end something like this will be shown:
 
 ![Alt text](../img/kube.png)
 
