@@ -1,6 +1,11 @@
 # The following operations must be performed to correctly setup the environment to use the Framework application. 
 N.B. You need to install the cluster first (follow the "[How to Kubernetes](How_to_kubernetes.md)" file).
 
+First of all, clone this repository on the master node:
+```sh	
+git clone https://github.com/DEFEDGE/MTD-manager-console.git
+```
+
 ## 1. PGAdmin database setup
 
 Use PostgreSQL db with PGAdmin interface to manage the information about the cluster.
@@ -22,7 +27,7 @@ Use PostgreSQL db with PGAdmin interface to manage the information about the clu
  	sudo apt install pgadmin4
  	```
 	If you want, you can install desktop `sudo apt install pgadmin4-desktop` or web `sudo apt install pgadmin4-web` mode only.
-	- Configure the webserver, if you installed pgadmin4-web:
+	- Configure the webserver credentials, if you installed pgadmin4-web or both versions:
 	```sh
 	sudo /usr/pgadmin4/bin/setup-web.sh
  	```
@@ -34,12 +39,47 @@ Use PostgreSQL db with PGAdmin interface to manage the information about the clu
  	```sh
  	ALTER USER postgres PASSWORD 'postgres';
  	```
- 	and use the new password in the pgadmin UI in the proper field
-4. `127.0.0.1/pgadmin4` (<MASTER_NODE_IP>/pgadmin4 if you are using the server configuration) is the url to connecto to the db dashboard.
-5. Create a new server named localhost with `localhost` as adress, `5432` as port and `postgres` as username and password
-7. Create a new user called `mtdmanager` with all the privileges (in the privileges panel of the user properties) and set `mtdmanager` as password (in the description panel in the user properties).
-8. Create new db named `mtdmanager` with mtdmanager as owner
-9. Modify the `pgadmin.sql` (in `/miscConfig` row 307-309) with the IP of the nodes of the cluster and the names provided in the cluster configuration and apply it using the query tool to build the database schema.
+4. `127.0.0.1/pgadmin4` (<MASTER_NODE_IP>/pgadmin4 if you are using the server configuration) is the url to connect to the db dashboard.
+5. Access with the credentials you inserted;
+6. Create a new server (`Right click on servers->register->server`) named `localhost` and in the `connection` tab set `localhost` as address, `5432` as port and `postgres` as username and password
+7. Create a new user (`Right click on the server you created->create->Login/Group role`) called `mtdmanager`, set `mtdmanager` as password (in the `definition` panel) and allow all the privileges (in the `privileges` panel).
+8. Create new DB (`Right click on databases->create->database`) named `mtdmanager` with mtdmanager as owner.
+9. Modify the `pgadmin.sql` (in `/miscConfig` row 304-319) with the IP of the nodes of the cluster and the name provided in the cluster configuration as follows:
+```sql
+--
+-- Data for Name: node; Type: TABLE DATA; Schema: mtdmanager; Owner: mtdmanager
+--
+--                                  hostname    IP            ID  Role    availab Type
+INSERT INTO mtdmanager.node VALUES ('master', '192.168.x.y', 1, 'master', true, 'cloud');
+INSERT INTO mtdmanager.node VALUES ('worker1', '192.168.x.z', 2, 'worker', true, 'cloud');
+INSERT INTO mtdmanager.node VALUES ('worker2', '192.168.x.h', 3, 'worker', true, 'cloud');
+
+
+--
+-- Data for Name: node_label; Type: TABLE DATA; Schema: mtdmanager; Owner: mtdmanager
+--
+
+INSERT INTO mtdmanager.node_label VALUES (1, 'name', 'master', 1);
+INSERT INTO mtdmanager.node_label VALUES (2, 'name', 'worker', 2);
+INSERT INTO mtdmanager.node_label VALUES (3, 'name', 'worker', 3);
+```
+type can be `cloud` or `edge` if you are planning to use edge nodes.
+
+10. Copy paste the code in the query tool (`Right click on mtdmanager->Query Tool`) and apply to build the database schema.
+11. Now you can query the database:
+```sql
+select * from mtdmanager.node;
+
+--select * from mtdmanager.service_account;
+
+--select * from mtdmanager.parameter;
+
+--select * from mtdmanager.deployment;
+
+--select * from mtdmanager.node_label;
+
+--select * from mtdmanager.strategy;
+```
 
 ## 2. Code setup
 1. In `application.properties` (src/main/resources/application.properties):
@@ -52,11 +92,12 @@ Use PostgreSQL db with PGAdmin interface to manage the information about the clu
 	To make the application able to collect node metrics:
   	- apply permanent port forwarding with `NodePortProme.yaml` (in mtd-manager/miscConfig) using the command
     	```sh
+     	kubectl create namespace kubernetes-monitoring-system
     	kubectl apply -f NodePortProme.yaml
     	```
     
 3. In `ClusterService` (src/main/java/mtd/manager/service/ClusterService.java):
-	- change the ip of `PROMETHEUS_URL` to the master node IP
+	- change the IP of `PROMETHEUS_URL` (row 44) to the master node IP.
 
 	To see the metrics without using the app, you can visit 
   	- http://<MASTER_NODE_IP>:30090/graph to perform the queries
@@ -67,21 +108,20 @@ Use PostgreSQL db with PGAdmin interface to manage the information about the clu
 
 	N.B. If you are using the server configuration, you need to connect to http://<MASTER_NODE_IP>:8080
 
-5. Once everything is set, execute the following commands to use the Java 17 version:
+5. Once everything is set, execute the following commands to install the Java 17 version
 	```sh
 	sudo apt install openjdk-17-jdk
 	```
-	to install and 
+	and to select it 
 	```sh
 	sudo update-alternatives --config java
 	```
-	to select the Java 17 version
 
 6. Install maven
 	```sh
 	sudo apt install maven -y
 	```
-
+ 
 7. Afterward, execute the following commands in the main folder:
 	```sh
 	sudo chmod +x build-and-run.sh
