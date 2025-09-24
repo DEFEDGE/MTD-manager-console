@@ -19,24 +19,13 @@ The application is intuitive and easy to use.
 
 in which information about the cluster and the single node is automatically retrieved.
 
-- In the `Nodes List` page
+- In the `Nodes List` page, the user can access the information of the active nodes in the cluster.
 
-![Alt text](img/List-node.png "Nodes")
+![Alt text](img/NodeList.png "Nodes")
 
-![Alt text](img/Add_node.png "Add Node Form")
+- In the `Pods List` page, the user can access the information for each pod installed in the cluster and can decide on which of them MTD will be enabled.
 
-the user can manage the node lifecycle (using add, edit and delete functions).
-
-- In the `Deployment List` page
-
-![Alt text](img/List-deplo.png "Deployments")
-
-![Alt text](img/Add_deplo.png "Add Deployment Form")
-
-the user can manage the deployment lifecycle (using add, edit and delete functions) and can decide on which deployment will enable the MTD.  
-
-N.B. The name of the deployment is the corresponding workload. 
-
+![Alt text](img/PodList.png "Deployments")  
 
 - In the `Strategies List` page
 
