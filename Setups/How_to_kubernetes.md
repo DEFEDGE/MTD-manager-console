@@ -58,6 +58,7 @@ On each VM install
     ```sh
     ./kk create config --with-kubernetes v1.33.4
     ```
+
 Refer to [the official GitHub page](https://github.com/kubesphere/kubekey/blob/master/docs/kubernetes-versions.md) to check the latest Kubernetes supported version.
 The command using Kubesphere `./kk create config --with-kubernetes v1.23.10 --with-kubesphere v3.4.1` is not available anymore.
 
@@ -84,6 +85,7 @@ The command using Kubesphere `./kk create config --with-kubernetes v1.23.10 --wi
     ./kk create cluster -f <config-name>.yaml
     ```
 Refer to [this file](KubeKey_CMD.md) if you need more KubeKey cluster management commands
+
 ---
 
 If you want to install a custom application on the cluster that does not require edge nodes, you can skip the following steps and start the [setup of the framework](Framework_setup.md) itself. As an example of a cloud application, you can refer to the [bank application](Bank_setup.md) that provides a simple high-level money transfer mechanism like PayPal.
