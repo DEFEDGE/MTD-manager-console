@@ -67,7 +67,6 @@ CREATE TABLE mtdmanager.pod (
     node_name character varying,
     status character varying,
     pod_ip character varying,
-    strategy integer NOT NULL,
     enabled boolean NOT NULL,
     id_deplo integer
 );
