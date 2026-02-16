@@ -41,7 +41,7 @@ On each VM install
     ```
 ---    
 ## 2. Cluster Installation
-### N.B. The following guide relies on the use of Kubesphere, which is not open source anymore. Updates will follow.
+
 - Follow the guide: [KubeSphere Multi-node Installation](https://kubesphere.io/docs/v3.4/installing-on-linux/introduction/multioverview/)
 - Video guide: [YouTube Video Guide](https://www.youtube.com/watch?v=nYOYk3VTSgo)
 
@@ -94,6 +94,7 @@ In any case, you can follow the [Application environment setup guide](Applicatio
 
 ---
 ## 4. Adding an Edge Node in the Cluster
+### N.B. The following guide relies on the use of Kubesphere, which is not open source anymore. Updates will follow.
 [Add Edge Nodes Guide](https://www.kubesphere.io/docs/v3.4/installing-on-linux/cluster-operation/add-edge-nodes/)
 
 ### 1. Install KubeEdge on Master Node
