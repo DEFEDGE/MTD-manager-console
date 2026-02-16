@@ -12,7 +12,7 @@ The test banking application was designed with a simplified microservices archit
 * **Backend:** The application service that handles business logic, user operations (login, registration, transfers, etc.), and interaction with the database. It is implemented using the Python Flask framework.
 * **Database:** A MySQL instance used to store user data (credentials, balance) and transactions.
 
-The typical interaction sequence for a user operation (such as viewing the dashboard or making a transfer) follows the logical flow: User (via Frontend) -> Backend -> Database -> Backend -> Frontend (page refresh) as shown in [img]. For requirements and security controls implemented refer to [file].
+The typical interaction sequence for a user operation (such as viewing the dashboard or making a transfer) follows the logical flow: User (via Frontend) -> Backend -> Database -> Backend -> Frontend (page refresh). For requirements and security controls implemented, refer to [this file](Bank_req&sec.md).
 
 ## 1. Initial Configuration in Kubesphere -- KUBESPHERE NOT AVAILABLE ANYMORE UPDATES WILL FOLLOW
 Configuration of the necessary workspaces and projects within Kubesphere.
