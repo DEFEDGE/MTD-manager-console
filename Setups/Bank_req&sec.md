@@ -28,14 +28,23 @@ During the development of the test banking application, certain security require
 
 ### Transfer Endpoint
 
-| Requirement                  | NIST Control   | Control Description                                             | Implementation                                                                 |
+| Requirement                  | NIST Control   | Control Description                                             | Implementation                                                                  |
 | :--------------------------- | :------------- | :-------------------------------------------------------------- | :------------------------------------------------------------------------------ |
-| Authorization via token      | AC-6           | Limitation of operations to authorized actions only.            | Verification of correspondence between “user_id” in the token and in the form.               |
-| Atomic transactions          | SC-24          | Transactional management to ensure data integrity.              | Use of “COMMIT” and “ROLLBACK” for atomic transactions.                          |
-| Balance check                | AC-3           | Control of information flow to prevent unauthorized operations. | SQL query to verify balance before operation.                        |
+| Authorization via token      | AC-6           | Limitation of operations to authorized actions only.            | Verification of correspondence between “user_id” in the token and in the form.  |
+| Atomic transactions          | SC-24          | Transactional management to ensure data integrity.              | Use of “COMMIT” and “ROLLBACK” for atomic transactions.                         |
+| Balance check                | AC-3           | Control of information flow to prevent unauthorized operations. | SQL query to verify balance before operation.                                   |
 
 ### Logout Endpoint
 
-| Requirement          | NIST Control | Control Description                          | Implementation                                                              |
-| :---------------- - | :------------- | :------------------------------------------------- | :------------------------------- -------------------------------------------- |
-| Token invalidation | AC-12          | Secure termination of user sessions.         | Regeneration of the secret key (“token_serializer”), but previous tokens are not revoked. |
+| Requirement         | NIST Control   | Control Description                          | Implementation                                                                            |
+| :---------------- - | :------------- | :--------------------------------------------| :---------------------------------------------------------------------------------------- |
+| Token invalidation  | AC-12          | Secure termination of user sessions.         | Regeneration of the secret key (“token_serializer”), but previous tokens are not revoked. |
+
+### Cross-cutting Aspects
+
+| Requirement                          | NIST Control  | Control Description                                            | Implementation                                                                                           |
+| :----------------------------------- | :------------ | :--------------------------------------------------------------| :------------------------------------------------------------------------------------------------------- |
+| Restricted CORS                      | SC-7          | Limitation of allowed origins to prevent cross-domain attacks. | CORS configuration with origins limited to “http://worker1:31566”.                                       |
+| Prepared statements                  | SI-10         | Prevention of SQL injection through parameterized queries.     | Use of “cursor.execute” with separate parameters (“%s”).                                                 |
+| Backend error logging                | AU-3          | Error logging for forensic analysis.                           | Error logging via “app.logger.error”.                                                                    |
+| Advanced input validation (XSS/SQLi) | SI-10         | Input sanitization to prevent XSS and injection.               | Basic sanitization with “sanitize_string”, but fields such as description are not validated against XSS. |
