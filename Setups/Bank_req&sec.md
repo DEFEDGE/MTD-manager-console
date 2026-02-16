@@ -1,4 +1,19 @@
-## Security Requirements and Controls Implemented
+# Application logic
+To clearly illustrate the application's operational flow and the interactions between its components, a sequence diagram has been created.
+
+![Alt text](img/sequence_diagram.png "SeqDiag")
+
+The diagram details the sequences of messages exchanged between the User (interacting with the Frontend), the Backend, and the MySQL Database for the main operations:
+
+* **Login:** User authentication process.
+* **Registration:** Creation of a new user account.
+* **Dashboard:** Request and display balance and transaction list.
+* **Transfer:** Execution of a funds transfer between users, including checks on sufficient balance and database updates.
+* **Logout:** Termination of the user session.
+
+This diagram is essential for understanding the expected behavior of the application and for identifying potential attack points on which to focus MTD testing and strategies.
+
+# Security Requirements and Controls Implemented
 
 During the development of the test banking application, certain security requirements were considered and implemented based on standard controls, referring, for example, to the security controls outlined by NIST. The following tables summarize the main requirements implemented for each backend endpoint and cross-cutting aspects, along with related NIST controls and a description of the specific implementation.
 
