@@ -37,7 +37,7 @@ During the development of the test banking application, certain security require
 ### Logout Endpoint
 
 | Requirement         | NIST Control   | Control Description                          | Implementation                                                                            |
-| :---------------- - | :------------- | :--------------------------------------------| :---------------------------------------------------------------------------------------- |
+| :------------------ | :------------- | :--------------------------------------------| :---------------------------------------------------------------------------------------- |
 | Token invalidation  | AC-12          | Secure termination of user sessions.         | Regeneration of the secret key (“token_serializer”), but previous tokens are not revoked. |
 
 ### Cross-cutting Aspects
