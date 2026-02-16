@@ -5,7 +5,7 @@ During the development of the test banking application, certain security require
 ### Login Endpoint
 
 | Requirement                       | NIST Control   | Control Description                                                 | Implementation                                                      |
-| :-------------------------------- | :------------- | :--------------- -------------------------------------------------- | :------------------------------------------------------------------ |
+| :-------------------------------- | :------------- | :------------------------------------------------------------------ | :------------------------------------------------------------------ |
 | Password hash authentication      | IA-5           | Secure management of authenticators (e.g., password hashing).       | Use “check_password_hash” and “generate_password_hash” (Werkzeug).  |
 | Email format validation           | SI-10          | Input validation to prevent malformed or malicious data.            | Regex “EMAIL_REGEX” to verify email format.                         |
 | JWT token generation              | IA-2           | User identification and authentication via secure tokens.           | Tokens signed with “itsdangerous.URLSafeSerializer”.                |
@@ -14,7 +14,7 @@ During the development of the test banking application, certain security require
 ### Register Endpoint
 
 | Requirement             | NIST Control   | Control Description                                           | Implementation                                           |
-| :-------------------- - | :------------- | :------------------------------------------------------------ | :------------------------------------------------------- |
+| :---------------------- | :------------- | :------------------------------------------------------------ | :------------------------------------------------------- |
 | Password hashing        | IA-5           | Secure storage of passwords using hashing functions.          | Use “generate_password_hash” to encrypt passwords.       |
 | Email validation        | SI-10          | Input validation to prevent invalid email entries.            | Regex “EMAIL_REGEX” for format checking.                 |
 | Email duplicate check   | AC-2           | Account management to prevent duplicate registrations.        | SQL query to check for email existence in the database.  |
@@ -22,7 +22,7 @@ During the development of the test banking application, certain security require
 ### Dashboard Endpoint
 
 | Requirement               | NIST Control   | Control Description                                         | Implementation                                                  |
-| :-----------------------  | :------------- | :---------------------------------------------------------- | :---------------------------------------------------- ----------|
+| :-----------------------  | :------------- | :---------------------------------------------------------- | :---------------------------------------------------------------|
 | Token Validation          | AC-3           | Restrict access to authorized users only.                   | Verify token using “validate_token” before returning data.      |
 | Sensitive Data Protection | SC-28          | Protection of sensitive data during storage/transmission.   | Conversion from decimal to float to avoid serialization errors. |
 
