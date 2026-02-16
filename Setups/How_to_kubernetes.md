@@ -41,10 +41,6 @@ On each VM install
     ```
 ---    
 ## 2. Cluster Installation
-
-- Follow the guide: [KubeSphere Multi-node Installation](https://kubesphere.io/docs/v3.4/installing-on-linux/introduction/multioverview/)
-- Video guide: [YouTube Video Guide](https://www.youtube.com/watch?v=nYOYk3VTSgo)
-
 ### Steps:
 1. Download KubeKey and make it executable:
 
