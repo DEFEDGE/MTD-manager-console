@@ -1,7 +1,7 @@
 # Application logic
 To clearly illustrate the application's operational flow and the interactions between its components, a sequence diagram has been created.
 
-![Alt text](img/sequence_diagram.png "SeqDiag")
+![Alt text](../img/sequence_diagram.png "SeqDiag")
 
 The diagram details the sequences of messages exchanged between the User (interacting with the Frontend), the Backend, and the MySQL Database for the main operations:
 
