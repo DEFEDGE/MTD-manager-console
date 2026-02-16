@@ -212,27 +212,27 @@ You can now try introducing a malicious pod on the cluster following the [attack
    3.1  **Identify the PersistentVolume (PV) and its associated node/path:**
        First, find which node your `falco-talon-logs-pvc` is bound to and the specific path of the PV on that node.
    
-    ```bash
+   ```bash
     # Get the PV name associated with your PVC
     kubectl get pvc falco-talon-logs-pvc -n falco -o jsonpath='{.spec.volumeName}'
    
     # Then, describe the PV to find its node and path. Replace <PV_NAME_FROM_ABOVE> with the actual PV name.
     kubectl get pv pvc-62c0a4e7-dc4b-41fb-9eb1-87fe8d37a28b -o yaml | grep "path:"
-    ```
+   ```
        
    3.2  **SSH into the identified node:**
        Connect to the Kubernetes node you identified in the previous step (e.g., `worker1`) using SSH. You'll need the appropriate SSH user and the node's IP address or hostname.
    
-       ```bash
+   ```bash
        ssh <ssh_user>@<node_ip_or_hostname>
        # Example: ssh ubuntu@192.168.1.10 (if 'worker1' has IP 192.168.1.10)
-       ```
+   ```
    
    3.3  **Navigate and view logs on the node:**
        Once connected via SSH, you'll need to navigate to the PV's directory on the node, and then into the `falco-talon-logs/` subdirectory (which is the `mountPath` you specified in the Falco Talon Deployment).
    
-       ```bash
+   ```bash
        sudo su - # You might need root privileges to access /var/openebs directories
        cd /<PV_PATH_ON_NODE_FROM_STEP_1>/falco-talon-logs/
        # Example: cd /var/openebs/local/pv-62c0a4e7-dc4b-41fb-9eb1-87fe8d37a28b/falco-talon-logs/
-       ```
+   ```
