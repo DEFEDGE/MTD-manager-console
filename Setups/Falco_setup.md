@@ -17,6 +17,7 @@ This component consumes event flows and evaluates security rules to detect anoma
    watch kubectl get pods -n falco
    ```
    now Falco is successfully installed.
+   
    For the implemented rules refer to [this file](../miscConfig/falco/falco-rules.yaml)
 
 ## 2. Test Falco
