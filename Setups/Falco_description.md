@@ -10,7 +10,7 @@ Falco, originally created by Sysdig, is now a graduate Cloud Native Computing Fo
 
 Useful links:
 1. [Official docs](https://falco.org/docs/)
-2. [Try Falco on KLubernetes](https://falco.org/docs/getting-started/falco-kubernetes-quickstart/)
+2. [Try Falco on Kubernetes](https://falco.org/docs/getting-started/falco-kubernetes-quickstart/)
 3. [Falco Helm Charts](https://github.com/falcosecurity/charts)
 4. [Falco Adopters](https://github.com/falcosecurity/falco/blob/master/ADOPTERS.md)
 5. [Falco registered plugins](https://github.com/falcosecurity/plugins#registered-plugins)
