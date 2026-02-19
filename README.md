@@ -3,7 +3,7 @@ This directory collects works about Moving Target Defense (MTD) connected to the
 
 The `Setups` folder collects all the readmes that you need to understand the purpose of this repository:
 1. The [Framework description](Setups/Framework_description.md) file describes the first work done in the context of [DEFEDGE - PRIN PNRR 2022 Project]([https://github.com/DEFEDGE](https://defedge.dieti.unina.it/)) where a framework was built to perform MTD techniques on a ckubernetes cluster [1].
-2. The [Framework setup](Setups/Framework_setup.md) file describes the steps needed to deploy the framework given the cluster that can be installed following this [kubernetes guide](Setups/How_to_kubernetes.md) and this [ubuntu guide](Setups/Ubuntu_server.md).
+2. The [Framework setup](Setups/Framework_setup.md) file describes the steps needed to deploy the framework given the cluster that can be installed following this [kubernetes guide](Setups/How_to_kubernetes.md) and this [ubuntu guide](Setups/Ubuntu_Server.md).
 3. The `src` folder contains the JAVA code for the framework that can be executed with the `build_and_run.sh` script.
 4. In the context of the cluster, you'll install Prometheus for monitoring purposes and you can add [Grafana](Setups/Grafana_setup.md) to interact with a web UI giving access to custom dashboards representing the cluster status.
 5. As a test case, a simple [application](Setups/Bank_setup.md) was implemented and deployed on the system (for further details refer to the [requirement file](Setups/Bank_req_setup.md) for more insights about the application and its security requirements and the [dedicated grafana dshboard](Setups/Bank_Grafana_Setup.md) file for monitoring the cluster and application status).
