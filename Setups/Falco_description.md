@@ -31,3 +31,6 @@ Falco Talon is a Response Engine for managing threats in Kubernetes clusters. It
 Useful links:
 1. [Docs main page](https://falco.org/blog/falco-talon-v0-1-0/)
 2. [Official GitHub repo](https://github.com/falcosecurity/falco-talon)
+
+Environment configuration example
+![Alt text](../img/falco.png)
