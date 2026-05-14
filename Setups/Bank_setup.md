@@ -223,4 +223,20 @@ Once all components have been deployed and are in the `Running` state (you can v
 
 You have successfully completed the deployment of the banking application on Kubesphere. You should now be able to access the application dashboard and, optionally, use the sample user credentials entered into the database to log in.
 
+# Troubleshooting
+1. ImagePullBackOff on the Ingress Controller
+If the ingress-nginx pods remain in the ImagePullBackOff state, check the manifest version. With Kubernetes v1.33, you must use ingress-nginx v1.12.x or later. Always use provider/baremetal for on-premises clusters.
+
+2. MySQL in CrashLoopBackOff
+If MySQL repeatedly enters CrashLoopBackOff, there are two main causes: i) Corrupted data -> delete the deployment and PVC, then recreate them to obtain a clean volume, ii) Liveness probe too aggressive -> increase initialDelaySeconds from 30 to 120 seconds if not done already.
+
+3. Ingress with CLASS <none>
+If Ingresses show CLASS <none> in the CLASS column, add ingressClassName: nginx to the spec section of each Ingress resource.
+
+4. Namespace in Terminating
+If a namespace remains stuck in the Terminating state, wait for the resources to be deleted. If necessary, force the removal:
+```bash
+kubectl delete all --all -n <namespace> --force --grace-period=0
+```
+
 Now you can proceed to customize Grafana introducing new dashboards  [monitoring the application](Bank_Grafana_Setup.md).
