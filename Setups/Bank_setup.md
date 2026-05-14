@@ -14,71 +14,63 @@ The test banking application was designed with a simplified microservices archit
 
 The typical interaction sequence for a user operation (such as viewing the dashboard or making a transfer) follows the logical flow: User (via Frontend) -> Backend -> Database -> Backend -> Frontend (page refresh). For requirements and security controls implemented, refer to [this file](Bank_req_sec.md).
 
-## 1. Initial Configuration in Kubesphere -- KUBESPHERE NOT AVAILABLE ANYMORE UPDATES WILL FOLLOW
-Configuration of the necessary workspaces and projects within Kubesphere.
-
-1.  Access the **Kubesphere Control Panel**.
-2.  Navigate to `Platform` (top left corner) -> `Access Control`.
-3.  Select `Workspaces` and click on `Create`.
-    * Name the workspace `bank-workspace`.
-    * Set `admin` as the **Administrator**.
-    * Click `Create` to create the workspace.
-4.  Access the newly created workspace (`bank-workspace`).
-5.  Navigate to `Projects` -> `Create`.
-    * Name the project `bank-project`.
-    * Click `Create` to create the project.
+## 1. Namespace Creation
+Create a Kubernetes namespace:
+```bash
+kubectl create namespace bank-project
+```
 ---
-  
-## 2. Configure the `bank-project` Project
+## 2. TLS Configuration for HTTPS connections
+### 2.1 Self-signed Certificate generation
+```bash
+openssl req -x509 -nodes -newkey rsa:2048 \
+  -keyout tls.key -out tls.crt -days 365 \
+  -subj "/CN=bank.local"
+```
+This will generate `tls.crt` (certificate) and `tls.key` (private key).
 
-Within the `bank-project` project, we will enable the Gateway and configure a TLS Secret to grant HTTPS access.
+### 2.2 TLS Secret Creation
+Create the TLS secret in the bank-project namespace using kubectl:
+```bash
+kubectl create secret tls https-secrets \
+  --cert=tls.crt \
+  --key=tls.key \
+  -n bank-project
+```
 
-### 2.1 Enabling the Project Gateway
-
-The Gateway is required to exhibit project services outside the cluster.
-
-1.  Inside `bank-project`, navigate to `Project Settings` -> `Gateway Settings`.
-2.  Click on `Enable Gateway`.
-3.  Confirm the operation by clicking `OK` or `Enable`.
-
-### 2.2 Configure the TLS Secret for HTTPS
-
-To enable secure access via HTTPS, a TLS certificate is needed. We will create a self-signed certificate for testing purposes.
-
-1.  On the master node execute the following command to generate a self-signed certificate and private key:
-
-    ```bash
-    openssl req -x509 -nodes -newkey rsa:2048 -keyout tls.key -out tls.crt -days 365 -subj "/CN=bank.local"
-    ```
-    
-    This command will create two files in the current directory: `tls.crt` (the certificate) and `tls.key` (the private key).
-2.  Return to the Kubesphere UI, within `bank-project`.
-3.  Navigate to `Configuration` -> `Secrets`.
-4.  Click on `Create`.
-    * Enter `https-secrets` as the **Name**.
-    * Click `Next`.
-    * Select `TLS Information` as the **Type**.
-5.  Open the `tls.crt` file and copy the entire content including `-----BEGIN...-----` and `-----END...-----`.
-6.  Paste the content of `tls.crt` into the section labeled **Certificate**.
-7.  Open the `tls.key` file and copy the entire content including `-----BEGIN...-----` and `-----END...-----`.
-8.  Paste the content of `tls.key` into the section labeled **Private Key**.
-9.  Click `Create` to create the Secret.
+### 2.3 Database Secret Creation
+Creation of the secret containig MySQL credentials and application secret:
+```bash
+kubectl create secret generic backend-secrets \
+  --from-literal=db_password='password' \
+  --from-literal=secret_key='password' \
+  -n bank-project
+```
 ---
-## 3. Installing the Ingress-Nginx Controller
+## 3. Ingress-Nginx Controller Installation
+The Ingress Controller is responsible for managing external access to services exposed via Ingress Resources via NodePort.
+### 3.1 Installation
+```bash
+kubectl apply -f https://raw.githubusercontent.com/
+  kubernetes/ingress-nginx/controller-v1.12.1/
+  deploy/static/provider/baremetal/deploy.yaml
+```
 
-The Ingress Controller is responsible for managing external access to services exposed via Ingress Resources.
+### 3.2 Installation Verification
+```bash
+kubectl get pods -n ingress-nginx --watch
+```
+Wait untill the following pods show:
+•	ingress-nginx-controller: Running (1/1) - main controller
+•	ingress-nginx-admission-create: Completed - configuration job
+•	ingress-nginx-admission-patch: Completed - configuration job
 
-1.  On the master node, execute the following command to install the Ingress-Nginx Controller:
+### 3.3 NodePort Identification
+```bash
+kubectl get svc -n ingress-nginx
+```
+In the PORT(S) column look for the 443 port mapping (e.g., 43:32313/TCP specifies that NodePort HTTPS is 32313.)
 
-    ```bash
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.1/deploy/static/provider/cloud/deploy.yaml
-    ```
-
-    This command will deploy the Ingress Controller into the `ingress-nginx` namespace.
-2.  To verify the installation, return to the Kubesphere UI.
-3.  Navigate to `Platform` -> `Cluster Management`.
-4.  Select `Pods`. From the Namespace dropdown menu, choose `ingress-nginx`.
-5.  You should see the pods related to the Ingress Controller (typically 3, with 2 `Completed` and 1 `Running`)
 ---
 ## 4. Configuring Local Access (Hosts File)
 
@@ -94,8 +86,14 @@ To access the application using the name `bank.local`, you need to map this name
     Replace `<FRONTEND_WORKER_IP>` with the IP address of the frontend's worker node where the Ingress Controller is running.
 3.  Save the `hosts` file.
 ---
-## 5. Installing and Configuring the MySQL Database
+# Application Deployment
+To deploy the application, you'll need the following files in `MTD-manager-console/miscConfig/bank`
+•  mysql_deployment.yaml
+•	frontend_deployment.yaml
+•	backend_deployment.yaml
+•	bank_ingress.yaml
 
+## 1. Database Deployment
 We will install MySQL as the backend database for the application and configure the necessary tables.
 
 1.  On the master node, create a Kubernetes Secret for the database credentials. This secret will be used by the application backend to connect to MySQL.
@@ -104,8 +102,12 @@ We will install MySQL as the backend database for the application and configure 
     kubectl create secret generic backend-secrets --from-literal=db_password='rootpassword' --from-literal=secret_key='rootpassword' -n bank-project
     ```
 
-3.  Open the `mysql_deployment.yaml` file.
-4.  Find the line containing `kubernetes.io/hostname: worker1` (typically around line 28) and modify `worker1` with the name of the specific node where you want the MySQL pod to run. This is useful for ensuring the persistent volume is always attached to the same node.
+2.  Open the `mysql_deployment.yaml` file.
+3.  Find the line containing `kubernetes.io/hostname: worker1` (typically around line 28) and modify `worker1` with the name of the specific node where you want the MySQL pod to run. This is useful for ensuring the persistent volume is always attached to the same node.
+4.  Change the `Liveness Probe` by modifying the `initialDelaySeconds` from 30 to 120 seconds avoiding pod crashloopbackoff issues
+   ```bash
+   sed -i 's/initialDelaySeconds: 30/initialDelaySeconds: 120/' mysql_deployment.yaml
+   ``` 
 5.  Save the changes to the `mysql_deployment.yaml` file.
 6.  Apply the MySQL deployment in the `bank-project` project:
 
@@ -113,19 +115,16 @@ We will install MySQL as the backend database for the application and configure 
     kubectl apply -f mysql_deployment.yaml -n bank-project
     ```
 
-7.  Wait for the MySQL pod to be in the `Running` state. You can verify this in the Kubesphere UI (`bank-project` -> `Workloads` -> `Pods`) or with the command `kubectl get pods -n bank-project`. Note down the exact name of the pod (it will be something like `mysql-xxxxxxxxxx-xxxxx`).
+7.  Wait for the MySQL pod to be in the `Running` state. You can verify this with the command `kubectl get pods -n bank-project`. Note down the exact name of the pod (it will be something like `mysql-xxxxxxxxxx-xxxxx`).
+
 8.  Access the shell of the MySQL pod:
-
-    ```bash
-    kubectl exec -it <MYSQL_POD_NAME> -n bank-project -- sh
-    ```
-
-    Replace `<MYSQL_POD_NAME>` with the exact pod name noted in the previous step.
+     ```bash
+     kubectl exec -it <MYSQL_POD_NAME> -n bank-project -- sh # Replace `<MYSQL_POD_NAME>` with the exact pod name noted in the previous step.
+     ```
 9.  Once inside the pod's shell, access the MySQL client:
-
-    ```bash
-    mysql -u root -p
-    ```
+     ```bash
+     mysql -u root -p
+     ```
 
 10. When prompted, enter the password for the `root` user, which is `rootpassword` (as defined in the Secret).
 11. Once inside the MySQL console, view the existing databases:
@@ -182,40 +181,40 @@ We will install MySQL as the backend database for the application and configure 
 
     **SECURITY NOTE:** Passwords in the database are stored in hashed format to ensure data security at rest. To log in to the application dashboard with the sample users above, **the password to use is the user's first name with the first letter capitalized** (e.g., for user "Giovanni Rossi" the email is `giovanni.rossi@email.com` and the password is `Giovanni`).
 ---
-
-## 6. Deploying the Application (Frontend, Ingress, Backend)
+## 2. Deploying Frontend, Ingress, and Backend components
 
 Now we will deploy the application components and configure the Ingress Resource to route traffic.
 
-1.  On the master node apply the frontend deployment in the `bank-project` project:
+1. On the master node apply the frontend deployment in the `bank-project` project:
 
     ```bash
     kubectl apply -f frontend_deployment.yaml -n bank-project
     ```
 
-3.  Apply the Ingress Resource in the `bank-project` project. This will create the rules to route traffic from the Ingress Controller to the appropriate services.
-
+2. Before applying the Ingress Resource in the `bank-project` project, Add `ingressClassName: nginx` below every `spec:` block and verify that `secretName` is equal to the TLS secret created (https-secrets). Then execute:
     ```bash
-    kubectl apply -f bank_ingress.yaml -n bank-project
+    kubectl apply -f bank_ingress.yaml -n bank-project    # ingress deployment
+    kubectl get ingress -n bank-project                   # to verify that both ingress are of NGINX class 
     ```
-
-4.  Determine the NodePort assigned to the Ingress Resource. Return to the Kubesphere UI.
-    * Navigate to `bank-project` -> `Application Workloads` -> `Ingresses`.
-    * Select the Ingress you just created.
-    * On the main tab you can see information about the Ingress with something like `bank.local:<NodePort>`.
-5.  Open the `backend_deployment.yaml` file.
-6.  Find the section related to environment variables or frontend connection configuration (lines 59 and 61).
-7.  Modify the text `<MODIFY HERE>` with the `<NodePort>` value. This tells the backend which port the application will be accessible on from the frontend via the Ingress.
-8.  Save the changes to the `backend_deployment.yaml` file.
-9.  Apply the backend deployment in the `bank-project` project:
-
+3. Open the `backend_deployment.yaml` file and change nodePort to the HTTPS one applied before (or use `sed -i 's/<MODIFY HERE>/32313/g' backend_deployment.yaml`) and save the changes. This tells the backend which port the application will be accessible on from the frontend via the Ingress.
+4. Verify the change using
+   ```bash
+   grep "bank.local" backend_deployment.yaml
+   ```
+   The environment virables should show somenthing like `value: "https://bank.local:32313"`
+5. Apply the backend deployment in the `bank-project` project:
     ```bash
     kubectl apply -f backend_deployment.yaml -n bank-project
     ```
 ---
+## 3. Verify Application Access
+1. Verify the pod status using
+```bash
+kubectl get pods -n bank-project
+```
+front-end-xxxxxxxxx-xxxxx (Frontend), backend-xxxxxxxxx-xxxxx (Backend), mysql-xxxxxxxxx-xxxxx (Database) must be up and running.
 
-## 7. Accessing the Application
-
+2. Application Access
 Once all components have been deployed and are in the `Running` state (you can verify this in the Kubesphere UI in the Pods section of the `bank-project`), the application will be accessible.
 
 1.  Open a web browser on the machine where you modified the `hosts` file.
