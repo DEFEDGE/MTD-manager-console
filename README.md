@@ -16,6 +16,9 @@ The `Setups` folder collects all the readmes that you need to understand the pur
 
 [2] Iorio, D., De Benedictis, A. (2027). AMTD-EC: An Adaptive Moving Target Defense Framework for Edge-Cloud Systems. In: Kieseberg, P., Skopik, F., Atli, B., Asplund, M. (eds) Availability, Reliability and Security. ARES 2026 EU Projects Symposium Workshops. ARES 2026. Lecture Notes in Computer Science, vol 16903. Springer, Cham. [DOI](https://doi.org/10.1007/978-3-032-37218-5_36) 
 
+
+[3] Casola, V., De Benedictis, A. & Iorio, D. Moving target defense in Edge-Cloud systems: a systematic literature review. J Cloud Comp 15, 113 (2026). [DOI](https://doi.org/10.1186/s13677-026-00920-7) 
+
 ---
 Corresponding author: 
 
